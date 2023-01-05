@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  
+</head>
+  <body class="body">
+    <div class="container-fluid"> 
+        <div class="row "> 
+            <div class="col-12 ">
+                <div class="justify-content-center d-flex"> 
+
+                    <form>
+                        <div class="form-group"> 
+                            <h1 style="color: green;">Weather App</h1> 
+                        </div>
+                                
+                        <div class="form-group">
+                            <input type="text" name="" id="cityInput" placeholder="Enter a city" class="form-control"> 
+                        </div>
+    
+                        <div class="form-group">
+                            <input type="button" name="" id="search" class="btn btn-success form-control" value="Search">
+                        </div> 
+                    </form>
+                    
+
+                </div>
+            </div>
+            </div>
+            <div class="row"> 
+                <div class="col-12"> 
+                  <div class="  justify-content-center d-flex ">
+                         
+                    <div>
+
+                        <div class="form-group">
+                            <h2 id="cityName" style="color: green;"> </h2>
+
+                        </div>
+                    </div>
+
+                  </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="justify-content-center d-flex">
+                        <div class="form-group">
+                            <h2 style="color: green; "> </h2>
+
+                            <img src="" width="200"  alt="" id="icon">
+                           
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="justify-content-center d-flex">
+                        <div class="form-group">
+                            <h2 style="color: green" >
+                                Temp: <span id="temp"></span>
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="justify-content-center d-flex">
+                        <div class="form-group">
+                            <h2 style="color: green;">
+                             
+                             Real Fell: <span id="real-fell"></span>
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="justify-content-center d-flex">
+                        <div class="form-group">
+                            <h2 style="color: green;">
+                             Wind: <span id="wind"> </span>
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="justify-content-center d-flex">
+                        <div class="form-group">
+                            <h2 style="color: green;">
+                             Description: <span id="weather-condition">  </span>
+                             
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            
+            
+        </div>
+        </div>
+          
+    </div>
+    
+  </body>
+</html>
+
+<style>
+    .form-group{
+        margin:20px 0px; 
+        justify-content: center; 
+        display: flex; 
+        margin: 10px 0px;
+    }
+    body{
+        height: 100vh; 
+        align-items: center; 
+        display: flex; 
+    }
+    form{
+        width: 40%;
+    }
+    
+
+    
+</style>
+
+<script>
+    "use strict";
+
+    let searchButton = document.getElementById("search") 
+    let city=""; 
+    searchButton.addEventListener("click",getCityName); 
+
+
+    function getCityName(){ 
+        let cityInput = document.getElementById("cityInput"); 
+        city = cityInput.value 
+        getWeather() 
+
+    function getWeather(){ 
+
+        (async()=>{ 
+            const apikey = '4d8fb5b93d4af21d66a2948710284366'; 
+            let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=tr&appid=${apikey}&units=metric`; 
+            let response =await fetch(url)
+            let commits = await response.json();
+            console.log(commits); 
+            printAllData(commits.name,commits.main.feels_like,commits.main.temp,commits.wind.speed,commits.weather[0].main,commits.weather[0].icon) 
+        })()
+    }}
+
+    function printAllData(cname,feels_like,ctemp,cwind,cmain,cicon){ 
+
+        let cityName = document.getElementById("cityName")
+        cityName.innerHTML = cname 
+
+        let realFeel = document.getElementById("real-fell")
+        realFeel.innerHTML = feels_like
+
+        let temp  = document.getElementById("temp")
+        temp.innerHTML = ctemp
+        
+        let wind = document.getElementById("wind")
+        wind.innerHTML = cwind
+
+        let main = document.getElementById("weather-condition")
+        main.innerHTML = cmain.toUpperCase()
+
+        let icon =document.getElementById("icon") 
+        let iconurl = `https://openweathermap.org/img/wn/${cicon}@2x.png` 
+        icon.setAttribute("src", iconurl)    
+
+        let body = document.getElementsByTagName("body") 
+       console.log(cmain); 
+
+        if (cmain=="Thunderstorm") {
+            body[0].style.backgroundImage = 'url(https://media1.giphy.com/media/KHKoSQgiIBOIU/giphy.gif?cid=ecf05e4768r41i23jm0xelr0gd1z9912d14mby1ora9cxsii&rid=giphy.gif&ct=g)'
+            body[0].style.backgroundRepeat = "no-repeat" 
+            body[0].style.backgroundSize = "cover";
+            
+        }else if(cmain=="Drizzle"){
+            body[0].style.backgroundImage = 'url(https://media0.giphy.com/media/xTcnT8PuKl5GBz26mk/giphy.gif?cid=ecf05e47yckbn9gmpkix9vv38wweg7gbwenoaljhvdt3l0wb&rid=giphy.gif&ct=g)'
+            body[0].style.backgroundRepeat = "no-repeat" 
+            body[0].style.backgroundSize = "cover";
+
+        }else if(cmain=="Rain"){
+            body[0].style.backgroundImage = 'url(https://media0.giphy.com/media/26DMWExfbZSiV0Btm/giphy.gif?cid=ecf05e47j929b4np5patcpey6are423znvyvhjzzeukvbwkf&rid=giphy.gif&ct=g)'
+            body[0].style.backgroundRepeat = "no-repeat" 
+            body[0].style.backgroundSize = "cover";
+        }else if(cmain=="Snow"){
+            body[0].style.backgroundImage = 'url(https://media3.giphy.com/media/FoVi0LDjy1XS8/giphy.gif?cid=ecf05e47fgnupusg3c4yy2ii9u6utd7qt8wg7gqdrl5anecl&rid=giphy.gif&ct=g)'
+            body[0].style.backgroundRepeat = "no-repeat"
+            body[0].style.backgroundSize = "cover"; 
+        }else if(cmain=="Mist"){
+            body[0].style.backgroundImage = 'url(https://media4.giphy.com/media/26xBwlGgyeQjxx09G/giphy.gif?cid=ecf05e47w9uvparw87pxhzp3ajvju6dgre633y7wfjvadwdf&rid=giphy.gif&ct=g)'
+            body[0].style.backgroundRepeat = "no-repeat"
+            body[0].style.backgroundSize = "cover"; 
+        }else if(cmain=="Clear"){
+            body[0].style.backgroundImage = 'url(https://media3.giphy.com/media/ruknycEXRhOs8/giphy.gif?cid=ecf05e47l9zduzkx8e1oh5qu78q0kocu8nqi7qwfagrzm4ve&rid=giphy.gif&ct=g)'
+            body[0].style.backgroundRepeat = "no-repeat"
+            body[0].style.backgroundSize = "cover"; 
+        }else if(cmain=="Clouds"){
+            body[0].style.backgroundImage = 'url(https://media3.giphy.com/media/GFXNdR1tuMopi/giphy.gif?cid=ecf05e476y6hm5nj100hou6g77k2zo5qcsznvh8490xfzxuh&rid=giphy.gif&ct=g)'
+            body[0].style.backgroundRepeat = "no-repeat"
+             body[0].style.backgroundSize = "cover"; 
+        
+
+         }else
+            body[0].style.backgroundImage = ''
+        }
+     
+    
+   
+    
+
+
+
+
+
+
+
+
+
+
+
+</script>
